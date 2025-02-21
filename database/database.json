@@ -147,7 +147,7 @@
             "baseCost": 15.00
         }
     ],
-    "pizzaToppings": [
+    "pizzaAddOns": [
         {
             "id": 1,
             "pizzaId": 1,
