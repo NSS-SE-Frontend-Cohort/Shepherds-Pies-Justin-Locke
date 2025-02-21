@@ -6,7 +6,7 @@ import { OrderFilterBar } from "./OrderFilterBar"
 export const OrderList = ({ currentUser }) => {
     const [allOrders, setAllOrders] = useState([])
     const [filteredOrders, setFilteredOrders] = useState([])
-    const [showDeliveryOnly, setShowDeliveryOnly] = useState(false)
+    const [filterMode, setFilterMode] = useState("")
 
     const getAndSetOrders = () => {
         getAllOrders().then((orders) => {
@@ -17,23 +17,30 @@ export const OrderList = ({ currentUser }) => {
     useEffect(() => {
         getAndSetOrders()
     }, [currentUser])
+    
 
     useEffect(() => {
-        if (showDeliveryOnly) {
+        if (filterMode === "delivery") {
             const deliveryOrders = allOrders.filter(
                 (order) => order.isDelivery == true
             )
             setFilteredOrders(deliveryOrders)
+        } else if (filterMode === "dine-in") {
+            const dineInOrders = allOrders.filter(
+                (order) => order.isDelivery == false
+            )
+            setFilteredOrders(dineInOrders)
         } else {
             setFilteredOrders(allOrders)
         }
-    }, [showDeliveryOnly, allOrders])
+    }, [filterMode, allOrders])
+
     
     return (
         <div className="orders-container">
             <h2>Orders</h2>
             <OrderFilterBar 
-            setShowDeliveryOnly={setShowDeliveryOnly}
+            setFilterMode={setFilterMode}
             />
 
             <article className="orders">

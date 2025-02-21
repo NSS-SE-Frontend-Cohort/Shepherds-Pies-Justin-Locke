@@ -1,17 +1,25 @@
-export const OrderFilterBar = ({ setShowDeliveryOnly }) => {
+export const OrderFilterBar = ({ setFilterMode }) => {
     return (
         <div className="filter-bar">
             <button
                 className="filter-btn btn-primary"
                 onClick={() => {
-                    setShowDeliveryOnly(true)
+                    setFilterMode("delivery")
                 }}>
                     Deliveries
             </button>
             <button
+                className="filter-btn btn-primary"
+                onClick={() => {
+                    setFilterMode("dine-in")
+                }}>
+                    Dine In
+            </button>
+            
+            <button
                 className="filter-btn btn-info"
                 onClick={() => {
-                    setShowDeliveryOnly(false)
+                    setFilterMode("")
                 }}>
                     All Orders
             </button>
