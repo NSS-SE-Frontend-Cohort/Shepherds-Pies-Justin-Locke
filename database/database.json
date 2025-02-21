@@ -120,5 +120,97 @@
             "name": "Extra cheese",
             "currentCost": 0.50
         }
-    ]
+    ],
+    "pizzas": [
+        {
+            "id": 1,
+            "orderId": 101,
+            "sizeId": 2,
+            "cheeseId": 1,
+            "sauceId": 1,
+            "baseCost": 10.00
+        },
+        {
+            "id": 2,
+            "orderId": 102,
+            "sizeId": 3,
+            "cheeseId": 2,
+            "sauceId": 3,
+            "baseCost": 12.50
+        },
+        {
+            "id": 3,
+            "orderId": 103,
+            "sizeId": 4,
+            "cheeseId": 4,
+            "sauceId": 2,
+            "baseCost": 15.00
+        }
+    ],
+    "pizzaToppings": [
+        {
+            "id": 1,
+            "pizzaId": 1,
+            "toppingId": 1
+        },
+        {
+            "id": 2,
+            "pizzaId": 1,
+            "toppingId": 3
+        },
+        {
+            "id": 3,
+            "pizzaId": 2,
+            "toppingId": 2
+        },
+        {
+            "id": 4,
+            "pizzaId": 2,
+            "toppingId": 4
+        },
+        {
+            "id": 5,
+            "pizzaId": 3,
+            "toppingId": 5
+        }
+    ],
+    "orders": [
+        {
+            "id": 101,
+            "tableNumber": 5,
+            "isDelivery": false,
+            "subTotal": 13.50,
+            "deliverySurcharge": 0.00,
+            "tipAmount": 3.00,
+            "totalCost": 16.50,
+            "orderDateTime": "2025-02-20T12:30:00",
+            "employeeId": 1,
+            "deliveryDriverId": null
+        },
+        {
+            "id": 102,
+            "tableNumber": 3,
+            "isDelivery": true,
+            "subTotal": 13.50,
+            "deliverySurcharge": 5.00,
+            "tipAmount": 5.00,
+            "totalCost": 23.50,
+            "orderDateTime": "2025-02-20T13:15:00",
+            "employeeId": 2,
+            "deliveryDriverId": 5
+        },
+        {
+            "id": 103,
+            "tableNumber": 7,
+            "isDelivery": false,
+            "subTotal": 15.50,
+            "deliverySurcharge": 0.00,
+            "tipAmount": 4.00,
+            "totalCost": 19.50,
+            "orderDateTime": "2025-02-20T14:00:00",
+            "employeeId": 3,
+            "deliveryDriverId": null
+        }
+        ]
+
 }
