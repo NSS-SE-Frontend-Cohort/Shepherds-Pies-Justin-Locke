@@ -145,6 +145,14 @@
       "cheeseId": 4,
       "sauceId": 2,
       "baseCost": 15
+    },
+    {
+        "id": 4,
+        "orderId": 103,
+        "sizeId": 4,
+        "cheeseId": 4,
+        "sauceId": 2,
+        "baseCost": 15
     }
   ],
   "pizzaAddOns": [
@@ -172,6 +180,11 @@
       "id": 5,
       "pizzaId": 3,
       "toppingId": 5
+    },
+    {
+        "id": 6,
+        "pizzaId": 4,
+        "toppingId": 1
     }
   ],
   "orders": [
@@ -189,7 +202,7 @@
     },
     {
       "id": 102,
-      "tableNumber": 3,
+      "tableNumber": "",
       "isDelivery": true,
       "subTotal": 13.5,
       "deliverySurcharge": 5,
@@ -203,10 +216,10 @@
       "id": 103,
       "tableNumber": 7,
       "isDelivery": false,
-      "subTotal": 15.5,
+      "subTotal": 31,
       "deliverySurcharge": 0,
       "tipAmount": 4,
-      "totalCost": 19.5,
+      "totalCost": 35,
       "orderDateTime": "2025-02-20T14:00:00",
       "employeeId": 3,
       "deliveryDriverId": null
@@ -219,6 +232,41 @@
       "isStaff": true,
       "isDriver": true,
       "id": 1
+    },
+    {
+      "email": "crustking@doughmasters.com",
+      "fullName": "Mario Rossi",
+      "isStaff": true,
+      "isDriver": false,
+      "id": 2
+    },
+    {
+      "email": "cheeselord@meltygoodness.com",
+      "fullName": "Luigi Bianchi",
+      "isStaff": true,
+      "isDriver": true,
+      "id": 3
+    },
+    {
+      "email": "sauceboss@tomatotornado.com",
+      "fullName": "Antonio Verdi",
+      "isStaff": true,
+      "isDriver": false,
+      "id": 4
+    },
+    {
+      "email": "basilbabe@freshherbs.com",
+      "fullName": "Sofia Romano",
+      "isStaff": true,
+      "isDriver": true,
+      "id": 5
+    },
+    {
+      "email": "doughpro@risingsuccess.com",
+      "fullName": "Francesco Moretti",
+      "isStaff": true,
+      "isDriver": false,
+      "id": 6
     }
   ]
 }

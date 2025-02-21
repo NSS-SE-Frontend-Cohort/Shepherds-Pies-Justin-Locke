@@ -6,8 +6,26 @@ export const EmployeeNavBar = () => {
 
     return <>
     <ul className="navbar">
+    <li className="navbar-item">
+            <Link 
+            className="nabar-link"
+            to={"/"}>
+                Home
+            </Link>
+        </li>
         <li className="navbar-item">
-            <Link />
+            <Link 
+            className="nabar-link"
+            to={"/orders"}>
+                Orders
+            </Link>
+        </li>
+        <li className="navbar-item">
+            <Link 
+            className="nabar-link"
+            to={"/orders/create"}>
+                New Order
+            </Link>
         </li>
 
         {localStorage.getItem("shepherd_pie_user") ? (
