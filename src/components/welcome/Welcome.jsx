@@ -1,12 +1,14 @@
+import "./Welcome.css"
+
 export const Welcome = () => {
     return (
         <div className="welcome-container">
             <h1>
                 <span>Welcome to</span>
-                <span>Giuseppe</span>
+                <span>Shepherd's Pies</span>
             </h1>
             <div>
-                Come taste a real pie
+                A family favorite for generations
             </div>
 
         </div>

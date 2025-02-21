@@ -5,7 +5,7 @@ export const EmployeeNavBar = () => {
     const navigate = useNavigate()
 
     return <>
-    <ul>
+    <ul className="navbar">
         <li className="navbar-item">
             <Link />
         </li>
