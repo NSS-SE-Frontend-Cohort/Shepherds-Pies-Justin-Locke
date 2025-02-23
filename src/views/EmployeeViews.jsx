@@ -18,7 +18,7 @@ export const EmployeeViews = ({ currentUser }) => {
 
             <Route path="/orders" >
                 <Route index element={<OrderList currentUser={currentUser}/>} />
-                <Route path="create" element={<EmployeeOrderForm />} />
+                <Route path="create" element={<EmployeeOrderForm currentUser={currentUser}/>} />
             </Route>
 
             </Route>
