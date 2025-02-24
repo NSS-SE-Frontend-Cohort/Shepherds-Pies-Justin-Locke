@@ -27,25 +27,41 @@ export const PizzaDetails = ({ pizzaId, getAndSetPizzas }) => {
     
     return (
         <section className="pizza">
-            <header>
-                    <div>Size : {pizza.size?.name}</div>
-                    <div>Sauce : {pizza.sauce?.name}</div>
-                    <div>Cheese : {pizza.cheese?.name}</div>
-                <div className="pizza-footer"> Toppings : 
+            <header className="pizza-info">
+                <div>Pizza # {pizzaId}</div>
+                <div>Cost : {pizza.cost}</div></header>
+                    <div>
+                        <span className="pizza-info">Size : </span>
+                        <span>{pizza.size?.name}</span>
+                    </div>
+                    <div>
+                        <span className="pizza-info">Sauce : </span>
+                        <span>{pizza.sauce?.name}</span>
+                    </div>
+
+                    <div>
+                        <span className="pizza-info">Cheese : </span>
+                        <span>{pizza.cheese?.name}</span>
+
+                    </div>
+                    <div>
+                    <div className="pizza-info"> Toppings : </div>
+                    <div className="toppings-container">
                     {toppings.map((toppingObj) => {
                     return (
-                        <div key={toppingObj.id}>{toppingObj.topping?.name} </div>
+                        <span key={toppingObj.id}>
+                            <div>{toppingObj.topping?.name} </div></span>
                     )
-                })}</div>
-            </header>
-            <footer>
-                <div>
+                })}                    </div>
+
+                    </div>
+                    
+                
+            <footer className="pizza-button">
                     <button 
                     className="btn-warning"
                     onClick={handleDeletePizza}
                     >Delete Pizza</button>
-                </div>
-
             </footer>
         </section>
     )

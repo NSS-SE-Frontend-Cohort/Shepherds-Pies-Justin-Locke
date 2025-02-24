@@ -40,7 +40,9 @@ export const EmployeeOrderForm = ({ currentUser }) => {
         setSubtotal(currentSubtotal)
     }, [pizzas])
 
-    const handleDeleteOrder = () => {
+    const handleDeleteOrder = (event) => {
+        event.preventDefault()
+        
         deleteOrder(orderId).then(() => {
             navigate('/orders')
         })
@@ -92,7 +94,7 @@ export const EmployeeOrderForm = ({ currentUser }) => {
             <span> Subtotal : {formatToDollars(subtotal)}</span>
             </header>
             
-            <div className="pizzas">
+            <div className="pizzas-container">
                 {pizzas.map((pizzaObj) => {
                     return (
                         <div key={pizzaObj.id}>

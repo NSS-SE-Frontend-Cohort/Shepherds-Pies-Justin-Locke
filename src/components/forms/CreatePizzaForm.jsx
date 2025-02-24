@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { createPizza, createPizzaAddOn, getAllCheeses, getAllSauces, getAllSizes, getAllToppings } from "../../services/pizzaServices"
 import { ToppingForm } from "./ToppingForm"
 import { useNavigate } from "react-router-dom"
+import "./Form.css"
+import { formatToDollars } from "../../services/utilityServices"
 
 export const CreatePizzaForm = ({ order }) => {
     const [sizes, setSizes] = useState([])
@@ -9,6 +11,7 @@ export const CreatePizzaForm = ({ order }) => {
     const [cheeses, setCheeses] = useState([])
     const [toppings, setToppings] = useState([])
     const [baseCost, setBaseCost] = useState(0)
+    const [toppingsCost, setToppingsCost] = useState(0)
     const [pizza, setPizza] = useState({toppings: []})
 
     const navigate = useNavigate()
@@ -39,14 +42,6 @@ export const CreatePizzaForm = ({ order }) => {
     }, [])
 
     useEffect(() => {
-        const newPizza = {
-            orderId: order.id,
-            toppings: []
-        }
-    }, [order])
-
-    const handleAddPizza = () => {
-
         const addedToppings = pizza.toppings
         
         let currentToppingCost = 0;
@@ -54,18 +49,22 @@ export const CreatePizzaForm = ({ order }) => {
             currentToppingCost += topping.cost
         }
 
+        setToppingsCost(currentToppingCost)
+    }, [pizza.toppings])
+
+    const handleAddPizza = () => {
         
         const pizzaToMake = {
             orderId: order.id,
             sizeId: pizza.sizeId,
             sauceId: pizza.sauceId,
             cheeseId: pizza.cheeseId,
-            pizzaCost: currentToppingCost + baseCost
+            pizzaCost: toppingsCost + baseCost
         }
         
 
         createPizza(pizzaToMake).then((madePizza) => {
-            for (const topping of addedToppings) {
+            for (const topping of pizza.toppings) {
                 topping.pizzaId = madePizza.id
                 topping.orderId = order.id
                 createPizzaAddOn(topping)
@@ -88,8 +87,10 @@ export const CreatePizzaForm = ({ order }) => {
 
 
     return (
-        <form>
+        <form >
             <h2>New Pizza</h2>
+            <header>Cost : {formatToDollars(baseCost + toppingsCost)}</header>
+            <div className="form-pizza-order">
             <fieldset>
                 <div className="form-group">
                     <h3>Pizza size</h3>
@@ -176,6 +177,7 @@ export const CreatePizzaForm = ({ order }) => {
                     
                 </div>
             </fieldset>
+            </div>
             <footer>
                 <button 
                 className="btn-info"

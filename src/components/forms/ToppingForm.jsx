@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import "./Form.css"
 
 export const ToppingForm = ({ topping, pizza, setPizza }) => {
     const [checked , setChecked] = useState(false)
@@ -47,13 +48,13 @@ export const ToppingForm = ({ topping, pizza, setPizza }) => {
                             </label>
                             <span>
                                 {checked ? 
-                            <label>
+                            <label className="form-toppings-price">
                                 Price :
                                 <input 
                                 type="number"
                                 min={0.50}
                                 max={1.00}
-                                step={.05}
+                                step={.01}
                                 defaultValue={parseFloat(.50)}
                                 onChange={handlePriceChange}
                                 />
