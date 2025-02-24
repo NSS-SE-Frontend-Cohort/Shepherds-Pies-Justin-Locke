@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import "./Form.css"
 import { formatToDollars } from "../../services/utilityServices"
 
-export const CreatePizzaForm = ({ order, getAndSetPizzas }) => {
+export const CreatePizzaForm = ({ order, getAndSetPizzas, setBuildingPizza }) => {
     const [sizes, setSizes] = useState([])
     const [sauces, setSauces] = useState([])
     const [cheeses, setCheeses] = useState([])
@@ -58,12 +58,14 @@ export const CreatePizzaForm = ({ order, getAndSetPizzas }) => {
         setToppingsCost(currentToppingCost)
     }, [pizza.toppings])
 
-    const handleAddPizza = () => {
+    const handleAddPizza = (event) => {
+        event.preventDefault()
 
         if(costWarning) {
             (window.alert("Toppings can only be from $0.50 to $1.00. Adjust toping price to continue."))
-        } else {
-
+            return
+        }
+        const pizzaToppings = pizza.toppings
         const pizzaToMake = {
             orderId: order.id,
             sizeId: pizza.sizeId,
@@ -74,17 +76,23 @@ export const CreatePizzaForm = ({ order, getAndSetPizzas }) => {
         
 
         createPizza(pizzaToMake).then((madePizza) => {
-            for (const topping of pizza.toppings) {
+            
+            const toppingPromises = pizzaToppings.map((topping) => {
                 topping.pizzaId = madePizza.id
                 topping.orderId = order.id
-                createPizzaAddOn(topping)
-            }
+                return createPizzaAddOn(topping)
+            })
+
+            return Promise.all(toppingPromises)
             
         }).then(() => {
             getAndSetPizzas()
+        }).then(() => {
             navigate(`/orders/create/${order.id}`)
+        }).then(() => {
+            setBuildingPizza(false)
         })
-    }
+    
 
     }
 
@@ -99,13 +107,13 @@ export const CreatePizzaForm = ({ order, getAndSetPizzas }) => {
 
 
     return (
-        <form >
-            <header className="pizza-form-header">
+        <form onSubmit={handleAddPizza}>
             <h2>New Pizza</h2>
-            Cost : {formatToDollars(baseCost + toppingsCost)}
+            <header className="pizza-form-header">Cost : {formatToDollars(baseCost + toppingsCost)}
             <button 
+                type="submit"
                 className="btn-info"
-                onClick={handleAddPizza}>Add Pizza</button>
+                >Add Pizza To Order</button>
             </header>
             
             <div className="form-pizza-order">
