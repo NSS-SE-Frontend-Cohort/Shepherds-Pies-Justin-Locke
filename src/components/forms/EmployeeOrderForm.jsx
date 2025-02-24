@@ -141,8 +141,10 @@ export const EmployeeOrderForm = ({ currentUser }) => {
             {buildingPizza ? (
                 <div ref={pizzaFormRef}>
                 <CreatePizzaForm 
+                key={Date.now}
                 order={order}
                 getAndSetPizzas={getAndSetPizzas}
+                setBuildingPizza={setBuildingPizza}
                 />
                                 </div>
             ) : ""}

@@ -184,22 +184,6 @@
       "cheeseId": 5,
       "pizzaCost": 13.25,
       "id": 14
-    },
-    {
-      "orderId": 112,
-      "sizeId": 1,
-      "sauceId": 3,
-      "cheeseId": 2,
-      "pizzaCost": 7.02,
-      "id": 15
-    },
-    {
-      "orderId": 112,
-      "sizeId": 1,
-      "sauceId": 3,
-      "cheeseId": 4,
-      "pizzaCost": 6,
-      "id": 16
     }
   ],
   "pizzaAddOns": [
@@ -292,20 +276,6 @@
       "pizzaId": 14,
       "orderId": 111,
       "id": 20
-    },
-    {
-      "toppingId": 2,
-      "cost": 0.5,
-      "pizzaId": 15,
-      "orderId": 112,
-      "id": 21
-    },
-    {
-      "toppingId": 3,
-      "cost": 0.52,
-      "pizzaId": 15,
-      "orderId": 112,
-      "id": 22
     }
   ],
   "orders": [
@@ -392,13 +362,6 @@
       "orderDateTime": "2025-02-24T04:39:22.142Z",
       "employeeId": 1,
       "driverId": null
-    },
-    {
-      "employeeId": 1,
-      "tableNumber": 1,
-      "isDelivery": false,
-      "driverId": "",
-      "id": 112
     }
   ],
   "users": [
