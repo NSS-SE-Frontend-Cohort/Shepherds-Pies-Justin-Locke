@@ -33,3 +33,21 @@ export const createPizzaAddOn = (pizzaAddOn) => {
         body: JSON.stringify(pizzaAddOn)
     }).then(res => res.json())
 }
+
+export const getPizzasByOrderId = (orderId) => {
+    return fetch(`http://localhost:8088/orders/${orderId}?_embed=pizzas`).then(res => res.json())
+}
+
+export const getPizzaById = (pizzaId) => {
+    return fetch(`http://localhost:8088/pizzas/${pizzaId}?_expand=size&_expand=sauce&_expand=cheese`).then(res => res.json())
+}
+
+export const getToppingsByPizzaId = (pizzaId) => {
+    return fetch(`http://localhost:8088/pizzaAddOns?pizzaId=${pizzaId}&_expand=topping`).then(res => res.json())
+}
+
+export const deletePizzaById = (pizzaId) => {
+    return fetch(`http://localhost:8088/pizzas/${pizzaId}?_embed=pizzaAddOns`, {
+        method: "DELETE"
+    }).then(res => res.json())
+}

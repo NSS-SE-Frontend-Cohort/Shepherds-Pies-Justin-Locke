@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react"
-import { getAllCheeses, getAllSauces, getAllSizes, getAllToppings } from "../../services/pizzaServices"
+import { createPizza, createPizzaAddOn, getAllCheeses, getAllSauces, getAllSizes, getAllToppings } from "../../services/pizzaServices"
 import { ToppingForm } from "./ToppingForm"
+import { useNavigate } from "react-router-dom"
 
-export const CreatePizzaForm = () => {
+export const CreatePizzaForm = ({ order }) => {
     const [sizes, setSizes] = useState([])
     const [sauces, setSauces] = useState([])
     const [cheeses, setCheeses] = useState([])
     const [toppings, setToppings] = useState([])
-    const [pizza, setPizza] = useState({ toppings: [] })
+    const [baseCost, setBaseCost] = useState(0)
+    const [pizza, setPizza] = useState({toppings: []})
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         getAllSizes().then((sizesArray) => {
@@ -34,6 +38,54 @@ export const CreatePizzaForm = () => {
         })
     }, [])
 
+    useEffect(() => {
+        const newPizza = {
+            orderId: order.id,
+            toppings: []
+        }
+    }, [order])
+
+    const handleAddPizza = () => {
+
+        const addedToppings = pizza.toppings
+        
+        let currentToppingCost = 0;
+        for (const topping of addedToppings) {
+            currentToppingCost += topping.cost
+        }
+
+        
+        const pizzaToMake = {
+            orderId: order.id,
+            sizeId: pizza.sizeId,
+            sauceId: pizza.sauceId,
+            cheeseId: pizza.cheeseId,
+            pizzaCost: currentToppingCost + baseCost
+        }
+        
+
+        createPizza(pizzaToMake).then((madePizza) => {
+            for (const topping of addedToppings) {
+                topping.pizzaId = madePizza.id
+                topping.orderId = order.id
+                createPizzaAddOn(topping)
+            }
+            
+        }).then(() => {
+            navigate(`/orders/create/${order.id}`)
+        })
+
+    }
+
+    const handleSizeChange = ( event, size ) => {
+        const pizzaCopy = { ...pizza }
+            pizzaCopy.sizeId = parseInt(event.target.value)
+            setPizza(pizzaCopy)
+
+            // Update total cost based on selected size
+            setBaseCost(parseFloat(size.baseCost))
+    }
+
 
     return (
         <form>
@@ -48,11 +100,7 @@ export const CreatePizzaForm = () => {
                                 type="radio"
                                 name="size"
                                 value={size.id}
-                                onChange={(event) => {
-                                    const pizzaCopy = { ...pizza }
-                                    pizzaCopy.sizeId = event.target.value
-                                    setPizza(pizzaCopy)
-                                }}
+                                onChange={(event) => handleSizeChange( event, size)}
                                 required
                                     />
                                     {size.name} - (+${size.baseCost.toFixed(2)})
@@ -75,7 +123,7 @@ export const CreatePizzaForm = () => {
                                     value={sauce.id}
                                     onChange={(event) => {
                                         const pizzaCopy = { ...pizza }
-                                        pizzaCopy.sauceId = event.target.value
+                                        pizzaCopy.sauceId = parseInt(event.target.value)
                                         setPizza(pizzaCopy)
                                     }}
                                     required
@@ -99,7 +147,7 @@ export const CreatePizzaForm = () => {
                                 value={cheese.id}
                                 onChange={(event) => {
                                     const pizzaCopy = { ...pizza }
-                                    pizzaCopy.cheeseId = event.target.value
+                                    pizzaCopy.cheeseId = parseInt(event.target.value)
                                     setPizza(pizzaCopy)
                                 }}
                                 required
@@ -128,6 +176,11 @@ export const CreatePizzaForm = () => {
                     
                 </div>
             </fieldset>
+            <footer>
+                <button 
+                className="btn-info"
+                onClick={handleAddPizza}>Add Pizza</button>
+            </footer>
         </form>
     )
 }

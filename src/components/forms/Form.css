@@ -37,3 +37,8 @@ form {
     outline: 2px solid transparent;
     outline-offset: 2px;
   }
+
+  .pizzas {
+    display: flex;
+    flex-direction: column;
+  }

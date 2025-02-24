@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react"
-import { formatToDollars } from "../../services/utilityServices"
 
 export const ToppingForm = ({ topping, pizza, setPizza }) => {
     const [checked , setChecked] = useState(false)
-    const [price, setPrice] = useState(.5)
+    const [price, setPrice] = useState(parseFloat(.5))
 
     useEffect(() => {
         let updatedToppings = [ ...pizza.toppings ]
         if (checked) {
-            updatedToppings.push({ id: topping.id, cost: price }) // Add Topping
+            updatedToppings.push({ toppingId: topping.id, cost: parseFloat(price) }) // Add Topping
         } else {
-            updatedToppings = updatedToppings.filter(currentTopping => currentTopping.id !== topping.id) // Remove Topping
+            updatedToppings = updatedToppings.filter(currentTopping => currentTopping.toppingId !== topping.id) // Remove Topping
         }
 
         setPizza({ ...pizza, toppings: updatedToppings})
@@ -18,18 +17,18 @@ export const ToppingForm = ({ topping, pizza, setPizza }) => {
 
     useEffect(() => {
         let updatedToppings = pizza.toppings.map((currentTopping) => {
-            if (currentTopping.id === topping.id) {
-                return { ...currentTopping, cost: price}
+            if (currentTopping.toppingId === topping.id) {
+                return { ...currentTopping, cost: parseFloat(price)} // Update price of current selected topping
             }
             return currentTopping
         })
 
-        setPizza({ ...pizza, toppings: updatedToppings})
+        setPizza({ ...pizza, toppings: updatedToppings}) // Update topping 
     }, [price])
     
     const handlePriceChange = (event) => {
         const newPrice = event.target.value
-        setPrice(newPrice)
+        setPrice(parseFloat(newPrice))
     }
     
     return (
@@ -55,7 +54,7 @@ export const ToppingForm = ({ topping, pizza, setPizza }) => {
                                 min={0.50}
                                 max={1.00}
                                 step={.05}
-                                defaultValue={0.50}
+                                defaultValue={parseFloat(.50)}
                                 onChange={handlePriceChange}
                                 />
                                 

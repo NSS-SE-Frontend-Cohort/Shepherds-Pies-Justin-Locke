@@ -1,74 +1,131 @@
 import { useEffect, useState } from "react"
 import { CreatePizzaForm } from "./CreatePizzaForm"
-import { createOrder } from "../../services/orderServices"
-import { getAllDeliveryDrivers } from "../../services/employeeServices"
+import { deleteOrder, finalizeOrder, getOrderById } from "../../services/orderServices"
+import { useNavigate, useParams } from "react-router-dom"
+import { PizzaDetails } from "../pizza/PizzaDetails"
+import { getPizzasByOrderId } from "../../services/pizzaServices"
+import "./Form.css"
+import { formatToDollars } from "../../services/utilityServices"
 
 export const EmployeeOrderForm = ({ currentUser }) => {
     const [pizzas, setPizzas] = useState([])
     const [order, setOrder] = useState({})
-    const [drivers, setDrivers] = useState()
+    const [subtotal, setSubtotal] = useState(0)
+    const [buildingPizza, setBuildingPizza] = useState(false)
+
+    const navigate = useNavigate()
+
+    const { orderId } = useParams()
 
     useEffect(() => {
-        createOrder().then((order) => {
-
+        getOrderById(orderId).then((orderObj) => {
+            setOrder(orderObj)
         })
-    } , [])
+    } , [orderId])
+
+    
+    useEffect(() => {
+        getAndSetPizzas()
+    }, [order])
 
     useEffect(() => {
-        getAllDeliveryDrivers().then((driverArray) => {
-            setDrivers(driverArray)
-        })
-    }, [])
+        let currentSubtotal = 0
+        for (const pizza of pizzas) {
+            currentSubtotal += pizza.pizzaCost
+        }
+        if (order.isDelivery) {
+            currentSubtotal += 5
+        }
 
+        setSubtotal(currentSubtotal)
+    }, [pizzas])
+
+    const handleDeleteOrder = () => {
+        deleteOrder(orderId).then(() => {
+            navigate('/orders')
+        })
+    }
+
+    const getAndSetPizzas = () => {
+        getPizzasByOrderId(order.id).then((pizzaArray) => {
+            setPizzas(pizzaArray?.pizzas || [])
+        })
+    }
+
+    const handleSubmitOrder = (event) => {
+        event.preventDefault()
+
+       const tipInput = window.prompt("Would you like to add a tip? Enter the amount:" , "0")
+
+       const tipAmount = parseFloat(tipInput)
+       if (isNaN(tipAmount) || tipAmount < 0) {
+        alert("Invalid tip amount. Please enter a valid number.")
+        return
+       }
+       
+        const finishedOrder = {
+            id: order.id,
+            tableNumber: order.tableNumber,
+            isDelivery: order.isDelivery,
+            subtotal: subtotal,
+            deliverySurcharge: order.isDelivery ? 5 : "",
+            tipAmount: tipAmount,
+            totalCost: tipAmount + subtotal,
+            orderDateTime: new Date(),
+            employeeId: order.employeeId,
+            driverId: parseInt(order.driverId)
+        }
+
+        finalizeOrder(finishedOrder).then(() => {
+            navigate(`/orders`)
+        })
+
+    }
 
     return (
+        <>
         <form>
-            <fieldset>
-        <label>Table Number:</label>
-        <input
-          type="text"
-          name="tableNumber"
-          value={order.tableNumber}
-          disabled={order.isDelivery}
-        />
-      </fieldset>
-      <fieldset>
-        <div>
-        <label>
-          <input
-            type="checkbox"
-            name="isDelivery"
-            checked={order.isDelivery}
-            onChange={(event) => {
-                const orderCopy = { ...order }
-                orderCopy.isDelivery = event.target.checked
-                setOrder(orderCopy)
-            }}
-          />
-          Delivery Order
-        </label>
-      {order.isDelivery ? (
-        <select>
-            <option>Delivery Driver</option>
-            {drivers.map((driver) => {
-                return (
-                    <option
-                    value={driver.id}>{driver.fullName}</option>
-                )
-            })}
-        </select>
-      ) : ""}
-      </div>
-      <button className="btn-info">
-        Start Order
-      </button>
-      </fieldset>
+            <div className="order-container">
             <h2>New Order</h2>
-
-            <button className="btn-primary">Add Pizza</button>
-        <CreatePizzaForm />
-
-        <button className="btn-warning">Delete  Order</button>
-        </form>
-    )
-}
+            <header>
+            <span>Order # : {order.id}</span>
+            <span> Subtotal : {formatToDollars(subtotal)}</span>
+            </header>
+            
+            <div className="pizzas">
+                {pizzas.map((pizzaObj) => {
+                    return (
+                        <div key={pizzaObj.id}>
+                        <div> Pizza # {pizzaObj.id}
+                            <PizzaDetails pizzaId={pizzaObj.id}/>
+                        </div>
+                        </div>
+                    )
+                })}
+            </div>
+            <div className="btn-container">
+            {!buildingPizza ? 
+            <button 
+            className="btn-primary"
+            onClick={() => setBuildingPizza(true)}>Add Pizza</button>
+            : "" }
+            <button 
+            className="btn-warning"
+            onClick={handleDeleteOrder}>Delete  Order</button>
+            <button className="btn-info"
+            onClick={handleSubmitOrder}>
+                Submit Order
+            </button>
+            </div>
+            </div>
+            
+            </form>
+            {buildingPizza ? (
+                <CreatePizzaForm 
+                order={order}
+                getAndSetPizzas={getAndSetPizzas}
+                />
+            ) : ""}
+            
+        </>
+       )}

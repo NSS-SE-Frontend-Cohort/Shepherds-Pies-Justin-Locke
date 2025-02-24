@@ -2,8 +2,10 @@ import { useEffect, useState } from "react"
 import { getEmployeeUsers } from "../../services/userServices"
 import { formatToDollars } from "../../services/utilityServices"
 import "./Orders.css"
+import { deleteOrder } from "../../services/orderServices"
+import { eventWrapper } from "@testing-library/user-event/dist/utils"
 
-export const Order = ({order, currentUser }) => {
+export const Order = ({order, getAndSetOrders }) => {
     const [allEmployees, setAllEmployees] = useState([])
     const [employeeTookOrder, setEmployeeTookOrder] = useState({})
     const [deliveryDriver, setDeliveryDriver] = useState({})
@@ -20,16 +22,23 @@ export const Order = ({order, currentUser }) => {
     }, [allEmployees, order])
 
     useEffect(() => {
-        if (order.deliveryDriverId) {
-            const driver = allEmployees.find(employee => employee.id === order.deliveryDriverId)
+        if (order.driverId) {
+            const driver = allEmployees.find(employee => employee.id === order.driverId)
             setDeliveryDriver(driver)
         }
     }, [allEmployees, order])
+
+    const handleDeleteOrder = () => {
+        deleteOrder(order.id).then(() => {
+            getAndSetOrders()
+        })
+    }
 
     return (
         <section className="order" >
             <header className="order-info">#{order.id}</header>
             <div>Item Count : {order.pizzas?.length}</div>
+            <div>Tip : {formatToDollars(order.tipAmount)}</div>
             <div>Total Cost : {formatToDollars(order.totalCost)} </div>
             <footer>
                 <div>
@@ -40,7 +49,11 @@ export const Order = ({order, currentUser }) => {
                     <div className="order-info">delivery driver</div>
                     <div>{deliveryDriver ? deliveryDriver.fullName : ""}</div>
                 </div>
-
+                <button 
+                className="btn-warning"
+                onClick={handleDeleteOrder}>
+                    Delete Order
+                </button>
             </footer>
         </section>
     )
