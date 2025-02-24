@@ -187,11 +187,19 @@
     },
     {
       "orderId": 112,
-      "sizeId": 5,
-      "sauceId": 4,
-      "cheeseId": 3,
-      "pizzaCost": 19.07,
+      "sizeId": 1,
+      "sauceId": 3,
+      "cheeseId": 2,
+      "pizzaCost": 7.02,
       "id": 15
+    },
+    {
+      "orderId": 112,
+      "sizeId": 1,
+      "sauceId": 3,
+      "cheeseId": 4,
+      "pizzaCost": 6,
+      "id": 16
     }
   ],
   "pizzaAddOns": [
@@ -287,14 +295,14 @@
     },
     {
       "toppingId": 2,
-      "cost": 0.53,
+      "cost": 0.5,
       "pizzaId": 15,
       "orderId": 112,
       "id": 21
     },
     {
-      "toppingId": 6,
-      "cost": 0.54,
+      "toppingId": 3,
+      "cost": 0.52,
       "pizzaId": 15,
       "orderId": 112,
       "id": 22

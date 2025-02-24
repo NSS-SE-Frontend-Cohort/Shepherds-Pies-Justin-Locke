@@ -70,3 +70,11 @@ form {
     margin-left: 2rem;
     
   }
+
+  .pizza-form-header {
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid var(--outline);
+    align-items: center;
+    margin: 3rem 5rem;
+  }

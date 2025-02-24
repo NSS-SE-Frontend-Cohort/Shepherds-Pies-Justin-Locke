@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import "./Form.css"
 import { formatToDollars } from "../../services/utilityServices"
 
-export const CreatePizzaForm = ({ order }) => {
+export const CreatePizzaForm = ({ order, getAndSetPizzas }) => {
     const [sizes, setSizes] = useState([])
     const [sauces, setSauces] = useState([])
     const [cheeses, setCheeses] = useState([])
@@ -13,6 +13,7 @@ export const CreatePizzaForm = ({ order }) => {
     const [baseCost, setBaseCost] = useState(0)
     const [toppingsCost, setToppingsCost] = useState(0)
     const [pizza, setPizza] = useState({toppings: []})
+    const [costWarning, setCostWarning] = useState(false)
 
     const navigate = useNavigate()
 
@@ -47,13 +48,22 @@ export const CreatePizzaForm = ({ order }) => {
         let currentToppingCost = 0;
         for (const topping of addedToppings) {
             currentToppingCost += topping.cost
+            if (topping.cost >1 || topping.cost <.5) {
+                setCostWarning(true)
+            } else (
+                setCostWarning(false)
+            )
         }
 
         setToppingsCost(currentToppingCost)
     }, [pizza.toppings])
 
     const handleAddPizza = () => {
-        
+
+        if(costWarning) {
+            (window.alert("Toppings can only be from $0.50 to $1.00. Adjust toping price to continue."))
+        } else {
+
         const pizzaToMake = {
             orderId: order.id,
             sizeId: pizza.sizeId,
@@ -71,8 +81,10 @@ export const CreatePizzaForm = ({ order }) => {
             }
             
         }).then(() => {
+            getAndSetPizzas()
             navigate(`/orders/create/${order.id}`)
         })
+    }
 
     }
 
@@ -81,15 +93,21 @@ export const CreatePizzaForm = ({ order }) => {
             pizzaCopy.sizeId = parseInt(event.target.value)
             setPizza(pizzaCopy)
 
-            // Update total cost based on selected size
+            // Update base cost based on selected size
             setBaseCost(parseFloat(size.baseCost))
     }
 
 
     return (
         <form >
+            <header className="pizza-form-header">
             <h2>New Pizza</h2>
-            <header>Cost : {formatToDollars(baseCost + toppingsCost)}</header>
+            Cost : {formatToDollars(baseCost + toppingsCost)}
+            <button 
+                className="btn-info"
+                onClick={handleAddPizza}>Add Pizza</button>
+            </header>
+            
             <div className="form-pizza-order">
             <fieldset>
                 <div className="form-group">
@@ -179,9 +197,7 @@ export const CreatePizzaForm = ({ order }) => {
             </fieldset>
             </div>
             <footer>
-                <button 
-                className="btn-info"
-                onClick={handleAddPizza}>Add Pizza</button>
+               
             </footer>
         </form>
     )

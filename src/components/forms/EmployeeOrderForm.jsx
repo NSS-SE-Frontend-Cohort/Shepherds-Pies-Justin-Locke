@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { CreatePizzaForm } from "./CreatePizzaForm"
 import { deleteOrder, finalizeOrder, getOrderById } from "../../services/orderServices"
 import { useNavigate, useParams } from "react-router-dom"
@@ -17,16 +17,30 @@ export const EmployeeOrderForm = ({ currentUser }) => {
 
     const { orderId } = useParams()
 
+    const pizzaFormRef = useRef(null)
+
     useEffect(() => {
         getOrderById(orderId).then((orderObj) => {
             setOrder(orderObj)
         })
     } , [orderId])
 
+    useEffect(() => {
+        const cleanUrl = `/orders/create/${orderId}`
+        if (window.location.pathname + window.location.search !== cleanUrl) {
+            navigate(cleanUrl, { replace: true })
+        }
+    }, [orderId, navigate])
     
     useEffect(() => {
         getAndSetPizzas()
     }, [order])
+
+    useEffect(() => {
+        if (buildingPizza && pizzaFormRef) {
+            pizzaFormRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [buildingPizza])
 
     useEffect(() => {
         let currentSubtotal = 0
@@ -42,7 +56,7 @@ export const EmployeeOrderForm = ({ currentUser }) => {
 
     const handleDeleteOrder = (event) => {
         event.preventDefault()
-        
+
         deleteOrder(orderId).then(() => {
             navigate('/orders')
         })
@@ -92,19 +106,8 @@ export const EmployeeOrderForm = ({ currentUser }) => {
             <header>
             <span>Order # : {order.id}</span>
             <span> Subtotal : {formatToDollars(subtotal)}</span>
-            </header>
             
-            <div className="pizzas-container">
-                {pizzas.map((pizzaObj) => {
-                    return (
-                        <div key={pizzaObj.id}>
-                        <div> Pizza # {pizzaObj.id}
-                            <PizzaDetails pizzaId={pizzaObj.id}/>
-                        </div>
-                        </div>
-                    )
-                })}
-            </div>
+            </header>
             <div className="btn-container">
             {!buildingPizza ? 
             <button 
@@ -121,12 +124,27 @@ export const EmployeeOrderForm = ({ currentUser }) => {
             </div>
             </div>
             
+            
+            <div className="pizzas-container">
+                {pizzas.map((pizzaObj) => {
+                    return (
+                        <div key={pizzaObj.id}>
+                        <div> Pizza # {pizzaObj.id}
+                            <PizzaDetails pizzaId={pizzaObj.id}/>
+                        </div>
+                        </div>
+                    )
+                })}
+            </div>
+            
             </form>
             {buildingPizza ? (
+                <div ref={pizzaFormRef}>
                 <CreatePizzaForm 
                 order={order}
                 getAndSetPizzas={getAndSetPizzas}
                 />
+                                </div>
             ) : ""}
             
         </>
