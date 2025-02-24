@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { deletePizzaById, getPizzaById, getToppingsByPizzaId } from "../../services/pizzaServices"
 import "./Pizza.css"
+import { formatToDollars } from "../../services/utilityServices"
 
 export const PizzaDetails = ({ pizzaId, getAndSetPizzas }) => {
     const [pizza, setPizza] = useState({})
@@ -29,7 +30,8 @@ export const PizzaDetails = ({ pizzaId, getAndSetPizzas }) => {
         <section className="pizza">
             <header className="pizza-info">
                 <div>Pizza # {pizzaId}</div>
-                <div>Cost : {pizza.cost}</div></header>
+                <div>Cost : {formatToDollars(pizza.pizzaCost)}</div>
+            </header>
                     <div>
                         <span className="pizza-info">Size : </span>
                         <span>{pizza.size?.name}</span>
