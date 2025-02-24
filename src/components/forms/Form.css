@@ -26,6 +26,7 @@ form {
     margin-right: 1rem;
     display: flex;
     flex-direction: column;
+    justify-self: center;
   }
   
   .form-btn {
@@ -47,7 +48,7 @@ form {
   }
 
   .form-start-order {
-    width: 60%;
+    width: 50%;
     color: var(--secondary);
     justify-self: center;
   }
