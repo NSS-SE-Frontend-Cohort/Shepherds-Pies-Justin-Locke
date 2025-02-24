@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { getAllDeliveryDrivers } from "../../services/employeeServices"
 import { createOrder } from "../../services/orderServices"
 import { useNavigate } from "react-router-dom"
+import "./Form.css"
 
 export const StartOrderForm = ({ currentUser }) => {
     const [newOrder, setNewOrder] = useState({})
@@ -45,8 +46,8 @@ const handleStartOrder = (event) => {
 }
     
     return (
-        <form>
-            <fieldset>
+        <form className="form-start-order">
+            <fieldset className="form-group">
         <label>Table Number:</label>
         <input
           type="text"
@@ -58,9 +59,10 @@ const handleStartOrder = (event) => {
             setNewOrder(orderCopy)
           }}
           disabled={newOrder.isDelivery}
+          className="form-control"
         />
       </fieldset>
-      <fieldset>
+      <fieldset className="form-group">
         <div>
         <label>
           <input
@@ -68,18 +70,24 @@ const handleStartOrder = (event) => {
             name="isDelivery"
             checked={newOrder.isDelivery}
             onChange={handleDeliveryStateChange}
+            className="form-control"
           />
           Delivery Order
         </label>
+        </div>
+            <div>
       {newOrder.isDelivery ? (
+        <span>
         <select
         onChange={(event) => {
             const orderCopy = { ...newOrder }
             orderCopy.driverId = event.target.value
             setNewOrder(orderCopy)
         }}
-        disabled={!newOrder.isDelivery}>
-            <option>Delivery Driver</option>
+        disabled={!newOrder.isDelivery}
+        className="form-control">
+            <option
+            value={""}>Delivery Driver</option>
             {drivers.map((driver) => {
                 return (
                     <option
@@ -89,13 +97,18 @@ const handleStartOrder = (event) => {
                 )
             })}
         </select>
+        </span>
+
       ) : ""}
       </div>
+      <footer className="form-start-order-footer">
       <button 
       className="btn-info"
       onClick={handleStartOrder}>
         Start Order
       </button>
+      </footer>
+
     </fieldset>
     </form>
     )

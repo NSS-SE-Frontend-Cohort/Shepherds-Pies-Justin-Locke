@@ -38,7 +38,34 @@ form {
     outline-offset: 2px;
   }
 
-  .pizzas {
+  .pizzas-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+
+  .form-start-order {
+    width: 60%;
+    color: var(--secondary);
+    justify-self: center;
+  }
+
+  .form-start-order-footer {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
+  }
+
+  .form-pizza-order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .form-toppings-price {
+    margin-left: 2rem;
+    
   }

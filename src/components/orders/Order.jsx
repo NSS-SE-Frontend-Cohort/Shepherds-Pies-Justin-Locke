@@ -3,7 +3,6 @@ import { getEmployeeUsers } from "../../services/userServices"
 import { formatToDollars } from "../../services/utilityServices"
 import "./Orders.css"
 import { deleteOrder } from "../../services/orderServices"
-import { eventWrapper } from "@testing-library/user-event/dist/utils"
 
 export const Order = ({order, getAndSetOrders }) => {
     const [allEmployees, setAllEmployees] = useState([])
