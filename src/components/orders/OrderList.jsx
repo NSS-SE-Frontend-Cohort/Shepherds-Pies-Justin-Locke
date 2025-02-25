@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { getAllOrders } from "../../services/orderServices"
 import { Order } from "./Order"
 import { OrderFilterBar } from "./OrderFilterBar"
+import { Link } from "react-router-dom"
 
 export const OrderList = ({ currentUser }) => {
     const [allOrders, setAllOrders] = useState([])
@@ -46,11 +47,13 @@ export const OrderList = ({ currentUser }) => {
             <article className="orders">
                 {filteredOrders.map((orderObj) => {
                     return (
+                        <Link to={`/orders/${orderObj.id}`} key={orderObj.id}>
                         <Order 
                         order={orderObj}
                         currentUser={currentUser}
                         getAndSetOrders={getAndSetOrders}
                         key={orderObj.id}/>
+                        </Link>
                     )
                 })}
             </article>

@@ -17,7 +17,7 @@ export const deleteOrder = (orderId) => {
 }
 
 export const getOrderById = (orderId) => {
-    return fetch (`http://localhost:8088/orders/${orderId}`).then(res => res.json())
+    return fetch (`http://localhost:8088/orders/${orderId}?_embed=pizzas`).then(res => res.json())
 }
 
 export const finalizeOrder = (order) => {

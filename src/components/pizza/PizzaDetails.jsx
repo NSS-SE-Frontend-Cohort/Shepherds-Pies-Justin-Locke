@@ -25,6 +25,10 @@ export const PizzaDetails = ({ pizzaId, getAndSetPizzas }) => {
         })
     }
 
+    // Disable the button if the URL matches `/orders/{orderId}`
+    console.log("Location Path Name: ", location.pathname)
+    console.log("Written Location Path: ", `/orders/${pizza.orderId}`)
+    const isOrderDetailsPage = location.pathname === `/orders/${pizza.orderId}`
     
     return (
         <section className="pizza">
@@ -63,6 +67,8 @@ export const PizzaDetails = ({ pizzaId, getAndSetPizzas }) => {
                     <button 
                     className="btn-warning"
                     onClick={handleDeletePizza}
+                    disabled={isOrderDetailsPage}
+                    hidden={isOrderDetailsPage}
                     >Delete Pizza</button>
             </footer>
         </section>
