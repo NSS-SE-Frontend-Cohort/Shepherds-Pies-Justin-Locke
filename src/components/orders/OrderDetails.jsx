@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { getOrderById } from "../../services/orderServices"
+import { useNavigate, useParams } from "react-router-dom"
+import { finalizeOrder, getOrderById } from "../../services/orderServices"
 import { formatToDollars } from "../../services/utilityServices"
 import { getEmployeeById } from "../../services/employeeServices"
 import { PizzaDetails } from "../pizza/PizzaDetails"
+import "./Orders.css"
 
 export const OrderDetails = () => {
     const [currentOrder, setCurrentOrder] = useState({pizzas: []})
     const [foundOrderTaker, setFoundOrderTaker] = useState({})
     const [foundDriver, setFoundDriver] = useState({})
+    const [initialTipValue, setInitialTipValue] = useState(0)
 
     const { orderId } = useParams()
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         getOrderById(orderId).then((orderObj) => {
             setCurrentOrder(orderObj)
+            setInitialTipValue(orderObj.tipAmount)
         })
     }, [orderId])
 
@@ -35,46 +40,76 @@ export const OrderDetails = () => {
             }
         }
     } , [currentOrder, foundOrderTaker])
+
+    const handleInputChange = (event) => {
+        const stateCopy = { ...currentOrder }
+        stateCopy[event.target.name] = parseFloat(event.target.value)
+        if (event.target.name === "tipAmount") {
+            stateCopy.totalCost = stateCopy.subtotal + stateCopy.tipAmount
+        }
+        setCurrentOrder(stateCopy)
+    }
+
+    const handleUpdateTip = (event) => {
+        event.preventDefault()
+
+        const updatedOrder = (({pizzas, ...currentOrderObj}) => currentOrderObj)(currentOrder)
+        finalizeOrder(updatedOrder).then(() => {
+            navigate(`/orders`)
+        })
+    }
     
     return (
-        <section className="order">
+        <section className="order-details-container">
+            
+
             <header>
                 Order Id : {currentOrder.id}
             </header>
-            <div>
-                <span className="order-info">Table Number : </span>
-                {currentOrder.tableNumber}
+            <div className="form-group">
+                <label className="order-info">Table Number : </label>
+                {currentOrder.tableNumber ? currentOrder.tableNumber : "n/a"}
             </div>
-            <div>
-                <span className="order-info">Delivery : </span>
+            <div className="form-group">
+                <label className="order-info">Delivery : </label>
                 {currentOrder.isDelivery ? "Yes" : "No"}
             </div>
-            <div>
-                <span className="order-info">Subtotal : </span>
-                {formatToDollars(currentOrder.subTotal)}
+            <div className="form-group">
+                <label className="order-info">Subtotal : </label>
+                {formatToDollars(currentOrder.subtotal)}
             </div>
-            <div>
-                <span className="order-info">Delivery Surcharge : </span>
+            <div className="form-group">
+                <label className="order-info">Delivery Surcharge : </label>
                 {currentOrder.isDelivery ? currentOrder.deliverySurcharge : "n/a"}
             </div>
-            <div>
-                <span className="order-info">Tip Amount : </span>
-                {formatToDollars(currentOrder.tipAmount)}
+            <div className="form-group">
+                <label className="order-info">Tip Amount : </label>
+                <input 
+                type="number"
+                name="tipAmount"
+                value={currentOrder.tipAmount ? currentOrder.tipAmount : 0}
+                onChange={handleInputChange}/>
+                {initialTipValue != currentOrder.tipAmount ? (
+                    <span><button 
+                    className="btn-primary"
+                    onClick={handleUpdateTip}>Update Tip</button></span>
+                ) : ""}
+                
             </div>
-            <div>
-                <span className="order-info">Total : </span>
+            <div className="form-group">
+                <label className="order-info">Total : </label>
                 {formatToDollars(currentOrder.totalCost)}
             </div>
-            <div>
-                <span className="order-info">Order Date : </span>
+            <div className="form-group">
+                <label className="order-info">Order Date : </label>
                 {currentOrder.orderDateTime}
             </div>
-            <div>
-                <span className="order-info">Order Taken By : </span>
+            <div className="form-group">
+                <label className="order-info">Order Taken By : </label>
                 {foundOrderTaker.fullName}
             </div>
-            <div>
-                <span className="order-info">Driver : </span>
+            <div className="form-group">
+                <label className="order-info">Driver : </label>
                 {currentOrder.isDelivery ? foundDriver.fullName : "n/a"}
             </div>
             <footer>
@@ -84,6 +119,7 @@ export const OrderDetails = () => {
                     )
                 })}
             </footer>
+
         </section>
     )
 }
