@@ -3,11 +3,14 @@ import { getEmployeeUsers } from "../../services/userServices"
 import { formatToDollars } from "../../services/utilityServices"
 import "./Orders.css"
 import { deleteOrder } from "../../services/orderServices"
+import { useNavigate } from "react-router-dom"
 
 export const Order = ({order, getAndSetOrders }) => {
     const [allEmployees, setAllEmployees] = useState([])
     const [employeeTookOrder, setEmployeeTookOrder] = useState({})
     const [deliveryDriver, setDeliveryDriver] = useState({})
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         getEmployeeUsers().then((employeesArray) => {
@@ -30,6 +33,7 @@ export const Order = ({order, getAndSetOrders }) => {
     const handleDeleteOrder = () => {
         deleteOrder(order.id).then(() => {
             getAndSetOrders()
+            navigate(`/orders`)
         })
     }
 
