@@ -176,38 +176,6 @@
       "cheeseId": 6,
       "pizzaCost": 7,
       "id": 13
-    },
-    {
-      "orderId": 111,
-      "sizeId": 3,
-      "sauceId": 4,
-      "cheeseId": 5,
-      "pizzaCost": 13.25,
-      "id": 14
-    },
-    {
-      "orderId": 112,
-      "sizeId": 2,
-      "sauceId": 5,
-      "cheeseId": 2,
-      "pizzaCost": 10.5,
-      "id": 15
-    },
-    {
-      "orderId": 112,
-      "sizeId": 1,
-      "sauceId": 1,
-      "cheeseId": 2,
-      "pizzaCost": 7.5,
-      "id": 16
-    },
-    {
-      "orderId": 112,
-      "sizeId": 5,
-      "sauceId": 2,
-      "cheeseId": 3,
-      "pizzaCost": 18.5,
-      "id": 17
     }
   ],
   "pizzaAddOns": [
@@ -293,48 +261,6 @@
       "pizzaId": 13,
       "orderId": 110,
       "id": 19
-    },
-    {
-      "toppingId": 5,
-      "cost": 0.75,
-      "pizzaId": 14,
-      "orderId": 111,
-      "id": 20
-    },
-    {
-      "toppingId": 5,
-      "cost": 0.5,
-      "pizzaId": 15,
-      "orderId": 112,
-      "id": 21
-    },
-    {
-      "toppingId": 1,
-      "cost": 0.5,
-      "pizzaId": 16,
-      "orderId": 112,
-      "id": 22
-    },
-    {
-      "toppingId": 2,
-      "cost": 0.5,
-      "pizzaId": 16,
-      "orderId": 112,
-      "id": 23
-    },
-    {
-      "toppingId": 3,
-      "cost": 0.5,
-      "pizzaId": 16,
-      "orderId": 112,
-      "id": 24
-    },
-    {
-      "toppingId": 7,
-      "cost": 0.5,
-      "pizzaId": 17,
-      "orderId": 112,
-      "id": 25
     }
   ],
   "orders": [
@@ -409,30 +335,6 @@
       "orderDateTime": "2025-02-24T04:36:19.100Z",
       "employeeId": 1,
       "driverId": 1
-    },
-    {
-      "id": 111,
-      "tableNumber": 41,
-      "isDelivery": false,
-      "subtotal": 13.25,
-      "deliverySurcharge": "",
-      "tipAmount": 3,
-      "totalCost": 16.25,
-      "orderDateTime": "2025-02-24T04:39:22.142Z",
-      "employeeId": 1,
-      "driverId": null
-    },
-    {
-      "id": 112,
-      "tableNumber": "",
-      "isDelivery": true,
-      "subtotal": 41.5,
-      "deliverySurcharge": 5,
-      "tipAmount": 0,
-      "totalCost": 41.5,
-      "orderDateTime": "2025-02-25T18:19:49.372Z",
-      "employeeId": 1,
-      "driverId": 5
     }
   ],
   "users": [
